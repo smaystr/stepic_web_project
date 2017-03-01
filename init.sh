@@ -1,5 +1,6 @@
-sudo ln -s /home/box/web/etc/nginx.conf /etc/nginx/sites-enabled/test.conf
-sudo /etc/init.d/nginx restart
-sudo ln -s /home/box/web/etc/gunicorn.conf /etc/gunicorn.d/test
-sudo /etc/init.d/gunicorn restart
-sudo /etc/init.d/mysql start
+# create symbolic link to a new nginx config
+sudo -s ln -sf /home/box/web/etc/nginx.conf  /etc/nginx/sites-enabled/django.conf
+sudo -s rm /etc/nginx/sites-enabled/default
+
+# restart nginx
+sudo -s /etc/init.d/nginx restart
