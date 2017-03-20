@@ -1,1 +1,4 @@
 Django>1.8,<1.9
+django_autofixture
+django-debug-toolbar
+PyMySQL

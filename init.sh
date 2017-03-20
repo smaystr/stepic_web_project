@@ -12,3 +12,13 @@ sudo -s /etc/init.d/gunicorn restart
 # creare symbolic links to gunicorn configs
 sudo -s ln -sf /home/box/web/etc/hello.py  /etc/gunicorn.d/hello.py
 sudo -s ln -sf /home/box/web/etc/django-gunicorn.conf  /etc/gunicorn.d/django-gunicorn.conf
+
+#
+cd /home/box/web && \
+    virtualenv venv && \
+    source venv/bin/activate && \
+    pip install -r requirements/production.txt && \
+    export PYTHONPATH=$(pwd):$PYTHONPATH && \
+    cd /home/box/web/ask && \
+    python manage.py migrate && \
+    exec gunicorn --bind=0.0.0.0:8000 --workers=4 ask.wsgi:application
