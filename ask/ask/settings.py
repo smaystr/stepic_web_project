@@ -23,7 +23,7 @@ SECRET_KEY = 'folwl^)3g!6!-t6czp%3o__^!$g_u1i%#o_e&#w&r@277jkb2&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-INTERNAL_IPS = ('127.0.0.1',)
+# INTERNAL_IPS = ('127.0.0.1',)
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -35,8 +35,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'autofixture',
-    'debug_toolbar',
+    # 'autofixture',
+    # 'debug_toolbar',
     'qa',
 )
 
@@ -50,7 +50,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware'
 )
 
 ROOT_URLCONF = 'ask.urls'
