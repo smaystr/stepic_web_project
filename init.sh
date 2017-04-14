@@ -30,6 +30,7 @@ cd /home/box/web && \
     pip install -r requirements/production.txt
 #
 cd /home/box/web/ask && \
+    python manage.py syncdb && \
     python manage.py makemigrations qa && \
     python manage.py migrate qa
 
