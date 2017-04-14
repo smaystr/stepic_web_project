@@ -1,6 +1,6 @@
 # stepic_web_project
 
-mkdir -p /home/box/web
+mkdir -p /home/box/web; cd web
 
 git clone https://github.com/smaystr/stepic_web_project.git /home/box/web
 

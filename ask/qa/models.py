@@ -13,14 +13,14 @@ class QuestionManager(models.Manager):
 
 
 class Question(models.Model):
+    objects = QuestionManager()
+
     title = models.CharField(max_length=255)
     text = models.TextField()
     added_at = models.DateTimeField(blank=True, auto_now_add=True)
-    rating = models.IntegerField(blank=True, null=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(blank=True, null=True, default=0)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default='x')
     likes = models.ManyToManyField(User, related_name='likes')
-
-    question_manager = QuestionManager()
 
     def get_url(self):
         return reverse('question', kwargs={'question_id': self.pk})
@@ -33,7 +33,7 @@ class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(blank=True, auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default='x')
 
     def get_url(self):
         return reverse('question', kwargs={'question_id': self.question.id})
