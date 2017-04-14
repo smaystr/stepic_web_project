@@ -1,6 +1,15 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+
+
+class QuestionManager(models.Manager):
+    def new(self):      # get_ +
+        return super(QuestionManager, self).get_queryset().all().filter(pub_date__gte=datetime.date.today())
+
+    def rating(self):   # get_ +
+        return super(QuestionManager, self).get_queryset().all().filter(rating__gte=0)
 
 
 class Question(models.Model):
@@ -10,6 +19,8 @@ class Question(models.Model):
     rating = models.IntegerField(blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='likes')
+
+    question_manager = QuestionManager()
 
     def get_url(self):
         return reverse('question', kwargs={'question_id': self.pk})

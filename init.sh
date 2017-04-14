@@ -18,3 +18,17 @@ sudo -s ln -sf /home/box/web/etc/gunicorn_ask.conf  /etc/gunicorn.d/ask
 # restart gunicorn, nginx
 sudo -s /etc/init.d/gunicorn restart
 sudo -s /etc/init.d/nginx restart
+
+# run MySQL & create DB
+echo 'innodb_use_native_aio = 0' | sudo tee --append /etc/mysql/my.cnf
+sudo -s /etc/init.d/mysql start && \
+    mysql -uroot -e "CREATE DATABASE qa CHARACTER SET utf8 COLLATE utf8_general_ci;"
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON qa.* TO 'root'@'localhost';"
+
+sudo pip install pytz
+#
+cd /home/box/web/ask && \
+    python manage.py makemigrations qa && \
+    python manage.py migrate qa
+
+sudo service mysql restart
