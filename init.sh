@@ -21,10 +21,9 @@ sudo -s /etc/init.d/nginx restart
 
 # run MySQL & create DB
 # echo 'innodb_use_native_aio = 0' | sudo tee --append /etc/mysql/my.cnf
-sudo -s /etc/init.d/mysql start && \
-    mysql -uroot -e "CREATE DATABASE qa CHARACTER SET utf8 COLLATE utf8_general_ci;"
-    mysql -uroot -e "GRANT ALL PRIVILEGES ON qa.* TO 'root'@'localhost';"
-
+#sudo -s /etc/init.d/mysql start && \
+#    mysql -uroot -e "CREATE DATABASE qa;"
+#
 #
 cd /home/box/web && \
     pip install -r requirements/production.txt
@@ -34,4 +33,4 @@ cd /home/box/web/ask && \
     python manage.py makemigrations qa && \
     python manage.py migrate qa
 
-sudo service mysql restart
+# sudo service mysql restart
