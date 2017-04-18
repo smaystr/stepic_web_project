@@ -26,7 +26,10 @@ sudo -s /etc/init.d/mysql start && \
     mysql -uroot -e "GRANT ALL PRIVILEGES ON qa.* TO 'root'@'localhost';"
 
 #
+mkdir ~/web
+#
 cd /home/box/web && \
+    git clone https://github.com/smaystr/stepic_web_project.git
     pip install -r requirements/production.txt
 #
 cd /home/box/web/ask && \
