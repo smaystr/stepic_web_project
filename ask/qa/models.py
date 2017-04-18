@@ -6,10 +6,12 @@ from django.core.urlresolvers import reverse
 
 class QuestionManager(models.Manager):
     def new(self):      # get_ +
-        return super(QuestionManager, self).get_queryset().all().filter(pub_date__gte=datetime.date.today())
+        pass
+        # return super(QuestionManager, self).get_queryset().all().filter(pub_date__gte=datetime.date.today())
 
     def rating(self):   # get_ +
-        return super(QuestionManager, self).get_queryset().all().filter(rating__gte=0)
+        pass
+        # return super(QuestionManager, self).get_queryset().all().filter(rating__gte=0)
 
 
 class Question(models.Model):
