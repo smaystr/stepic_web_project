@@ -1,17 +1,14 @@
-import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 
 class QuestionManager(models.Manager):
-    def new(self):      # get_ +
-        pass
-        # return super(QuestionManager, self).get_queryset().all().filter(pub_date__gte=datetime.date.today())
+    def new(self):
+        return super(QuestionManager, self).order_by('-id')
 
-    def rating(self):   # get_ +
-        pass
-        # return super(QuestionManager, self).get_queryset().all().filter(rating__gte=0)
+    def popular(self):
+        return super(QuestionManager, self).order_by('-rating')
 
 
 class Question(models.Model):
@@ -23,6 +20,9 @@ class Question(models.Model):
     likes = models.ManyToManyField(User, related_name='question_like_user', blank=True)
 
     objects = QuestionManager()
+
+    class Meta:
+        ordering = ('-added_at',)
 
     def get_url(self):
         return reverse('question', kwargs={'question_id': self.pk})
@@ -36,6 +36,9 @@ class Answer(models.Model):
     added_at = models.DateTimeField(blank=True, auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('added_at',)
 
     def get_url(self):
         return reverse('question', kwargs={'question_id': self.question.id})
