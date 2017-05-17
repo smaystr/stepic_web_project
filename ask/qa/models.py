@@ -25,7 +25,7 @@ class Question(models.Model):
         ordering = ('-added_at',)
 
     def get_url(self):
-        return reverse('question', kwargs={'question_id': self.pk})
+        return reverse('question', kwargs={'question_id': "/"+str(self.pk)})
 
     def __str__(self):
         return self.title

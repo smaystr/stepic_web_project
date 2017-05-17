@@ -8,6 +8,7 @@ from .models import Question
 from .forms import AskForm, AnswerForm, LoginForm, SignupForm
 from django.contrib.auth import login, logout
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 @require_GET
@@ -68,6 +69,7 @@ def question(request, question_id):
 
 
 # @login_required
+@csrf_exempt
 def ask(request, *args, **kwargs):
     if request.method == 'POST':
         form = AskForm(request.POST)
@@ -82,7 +84,8 @@ def ask(request, *args, **kwargs):
 
 
 # @login_required
-def answer(request):
+@csrf_exempt
+def answer(request, *args, **kwargs):
     if request.method == 'POST':
         form = AnswerForm(request.POST)
         if form.is_valid():
