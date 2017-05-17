@@ -70,7 +70,7 @@ def question(request, question_id):
 # @login_required
 def ask(request, *args, **kwargs):
     if request.method == 'POST':
-        form = AskForm(request.user, request.POST)
+        form = AskForm(request.POST)
         if form.is_valid():
             form._user = request.user
             _question = form.save()
@@ -84,7 +84,7 @@ def ask(request, *args, **kwargs):
 # @login_required
 def answer(request):
     if request.method == 'POST':
-        form = AnswerForm(request.user, request.POST)
+        form = AnswerForm(request.POST)
         if form.is_valid():
             print('Answer is valid')
             form._user = request.user
