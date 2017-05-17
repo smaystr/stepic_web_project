@@ -15,22 +15,19 @@ touch /home/box/web/gunicorn.log
 sudo -s ln -sf /home/box/web/etc/gunicorn_ask.conf  /etc/gunicorn.d/ask
 
 
-# restart gunicorn, nginx
-sudo -s /etc/init.d/gunicorn restart
-sudo -s /etc/init.d/nginx restart
+# start gunicorn, nginx
+sudo  service gunicorn start
+sudo service nginx start
 
-# run MySQL & create DB
-# echo 'innodb_use_native_aio = 0' | sudo tee --append /etc/mysql/my.cnf
-#sudo -s /etc/init.d/mysql start && \
-#    mysql -uroot -e "CREATE DATABASE qa;"
-#
 #
 cd /home/box/web && \
     pip install -r requirements/production.txt
 #
 cd /home/box/web/ask && \
-    python manage.py syncdb && \
+#    python manage.py syncdb && \
     python manage.py makemigrations qa && \
     python manage.py migrate qa
 
-# sudo service mysql restart
+# restart gunicorn, nginx
+sudo  service gunicorn restart
+sudo service nginx restart

@@ -1,9 +1,12 @@
+# from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.views.decorators.http import require_GET
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Question, Answer
+from django.core.paginator import Paginator, EmptyPage
+from django.core.urlresolvers import reverse
+from .models import Question
 from .forms import AskForm, AnswerForm, LoginForm, SignupForm
+from django.contrib.auth import login, logout
 from django.http import HttpResponse
 
 
@@ -20,27 +23,33 @@ def index(request, *args, **kwargs):
 
 
 def user_login(request, *args, **kwargs):
-    return HttpResponse(
-        content='OK',
-        content_type='html/text',
-        status=200,
-    )
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+    form = LoginForm()
+    return render(request, 'qa/login.html', {'form': form})
 
 
 def user_logout(request, *args, **kwargs):
-    return HttpResponse(
-        content='OK',
-        content_type='html/text',
-        status=200,
-    )
+    if request.user is not None:
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
 
 
 def user_signup(request, *args, **kwargs):
-    return HttpResponse(
-        content='OK',
-        content_type='html/text',
-        status=200,
-    )
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+    form = SignupForm()
+    return render(request, 'qa/signup.html', {'form': form})
 
 
 def question(request, question_id):
@@ -58,9 +67,10 @@ def question(request, question_id):
     return render(request, 'qa/question.html', context)
 
 
+# @login_required
 def ask(request, *args, **kwargs):
     if request.method == 'POST':
-        form = AskForm(request.POST)
+        form = AskForm(request.user, request.POST)
         if form.is_valid():
             form._user = request.user
             _question = form.save()
@@ -71,9 +81,10 @@ def ask(request, *args, **kwargs):
     return render(request, 'qa/ask.html', {'form': form})
 
 
+# @login_required
 def answer(request):
     if request.method == 'POST':
-        form = AnswerForm(request.POST)
+        form = AnswerForm(request.user, request.POST)
         if form.is_valid():
             print('Answer is valid')
             form._user = request.user
@@ -83,7 +94,6 @@ def answer(request):
     return HttpResponseRedirect('/')
 
 
-@require_GET
 def popular(request, *args, **kwargs):
     # list of questions in desc order by rating
     question_list = Question.objects.popular()
